@@ -18,9 +18,9 @@ namespace FileManager.Controllers
             {
                 try
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "\\Files\\");
-                    var dir = Directory.GetCurrentDirectory();
-                    Console.WriteLine("Directory = " + dir );
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\Uploads\\");
+                    // var dir = Directory.GetCurrentDirectory();
+                    // Console.WriteLine("Directory = " + dir );
                     if (!Directory.Exists(filePath))
                     {
                         Directory.CreateDirectory(filePath);
