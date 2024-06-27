@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace FileManager.Models
 {
-    public class FileUpload
+    public class FileData
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public IFormFile File { get; set; } = null!;
-        public string Name { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
+        public string FileType { get; set; } = string.Empty;
+        public DateTime UploadedOn { get; set; }
     }
 }

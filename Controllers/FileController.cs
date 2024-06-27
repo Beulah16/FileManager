@@ -2,46 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FileManager.Interfaces;
 using FileManager.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace FileManager.Controllers
 {
     [Route("api/files/")]
     [ApiController]
-    public class FileController : ControllerBase
+    public class FileController(IFileService fileService) : ControllerBase
     {
+        private readonly IFileService _fileService = fileService;
         [HttpPost("upload")]
-        public async Task<string> Upload([FromForm] FileUpload obj)
+        public async Task<string> Upload(IFormFile file)
         {
-            if (obj.File.Length > 0)
-            {
-                try
-                {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\Uploads\\");
-                    // var dir = Directory.GetCurrentDirectory();
-                    // Console.WriteLine("Directory = " + dir );
-                    if (!Directory.Exists(filePath))
-                    {
-                        Directory.CreateDirectory(filePath);
-                    }
-                    using (FileStream fileStream = System.IO.File.Create(filePath + obj.File.FileName))
-                    {
-                        await obj.File.CopyToAsync(fileStream);
-                        await fileStream.FlushAsync();
-                        return filePath + obj.File.FileName;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-            }
-            else
-            {
-                return "Upload failed";
-            }
-             
+            return await _fileService.UploadFile(file);
         }
+        // [HttpGet("download")]
+        // public async Task<ActionResult> Download(string fileName)
+        // {
+        //     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files\\Uploads\\", fileName);
+
+        //     var provider = new FileExtensionContentTypeProvider();
+        //     if(!provider.TryGetContentType(fileName, out var contentType))
+        //     {
+        //         contentType = "application/octet-stream";
+        //     }
+
+        //     var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        //     return File(bytes, contentType, Path.GetFileName(filePath));
+        // }
+    
     }
+
 }
